@@ -11,18 +11,26 @@ public class CSVReaderInJava
 {
 	public static void main(String... args)
 {
-		List<Book> books = readBooksFromCSV("books.txt"); // let's print all the person read from CSV file
+	
+		
+		System.out.print(SearchByTopic("distributed systems"));
+		
+		
+		/*List<Book> books = readBooksFromCSV("books.txt"); // let's print all the person read from CSV file
 for (Book b : books) 
 { 
 	System.out.println(b); 
 } 
+
+*/
 }
 	
 
 
 private static List<Book> readBooksFromCSV(String fileName) 
 { 
-	List<Book> books = new ArrayList<>(); Path pathToFile = Paths.get(fileName);
+	List<Book> books = new ArrayList<>(); 
+	Path pathToFile = Paths.get(fileName);
 // create an instance of BufferedReader 
 // using try with resource, Java 7 feature to close resources
 try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) 
@@ -44,10 +52,36 @@ try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US
 		}
 	} 
 catch (IOException ioe)
-{ ioe.printStackTrace(); 
+{
+	ioe.printStackTrace(); 
 }
 return books; 
 }
+
+
+public static String SearchByTopic(String Topic)
+{
+	String bookData = "This topic is not valid!";
+	List<Book> books = readBooksFromCSV("books.txt");
+	for (Book book : books) 
+	{ 
+		
+		
+				if (Topic==book.getTopic())
+				{
+					
+					bookData= "ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice();
+				}
+
+	}
+		return bookData;
+	
+}
+
+
+
+
+
 private static Book createBook(String[] metadata)
 
 {
@@ -89,7 +123,12 @@ class Book
 	
 @Override 
 public String toString()
-{ return "Book [name=" + name + ", price=" + price + ", price=" + price  + ", Amount=" + Amount + ", Topic=" + Topic+ "]"; } }
+{ return "Book [name=" + name + ", price=" + price + ", price=" + price  + ", Amount=" + Amount + ", Topic=" + Topic+ "]"; }
+
+
+
+
+}
 	
 
 
