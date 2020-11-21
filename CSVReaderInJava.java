@@ -11,18 +11,18 @@ public class CSVReaderInJava
 {
 	public static void main(String... args)
 {
+		 List<Book> booksOfTopic =SearchByTopic("books.txt","Graduate School");
+		 
 	
-		
-		System.out.print(SearchByTopic("distributed systems"));
-		
-		
-		/*List<Book> books = readBooksFromCSV("books.txt"); // let's print all the person read from CSV file
-for (Book b : books) 
+for (Book book : booksOfTopic) 
 { 
-	System.out.println(b); 
+	
+	System.out.println("ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice()); 
 } 
+System.out.println(LookUp("books.txt",1));
 
-*/
+
+
 }
 	
 
@@ -50,38 +50,104 @@ try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US
 		// if end of file reached, line would be null
 		line = br.readLine(); 
 		}
+} 
+       catch (IOException ioe)
+         {
+	     ioe.printStackTrace(); 
+          }
+         return books; 
+ }
+
+//**************************************************************************************
+public static List<Book> SearchByTopic(String fileName,String Topic)
+{
+	List<Book> bookData = new ArrayList<>(); 
+	List<Book> books = new ArrayList<>(); 
+	Path pathToFile = Paths.get(fileName);
+
+try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) 
+{
+
+	String line = br.readLine(); 
+	while (line != null) 
+	{ 
+		String[] attributes = line.split(",");
+		Book book = createBook(attributes); 
+		
+		 books.add(book); 
+	
+		line = br.readLine(); 
+		
+		}
+
+	
 	} 
 catch (IOException ioe)
 {
 	ioe.printStackTrace(); 
 }
-return books; 
-}
-
-
-public static String SearchByTopic(String Topic)
-{
-	String bookData = "This topic is not valid!";
-	List<Book> books = readBooksFromCSV("books.txt");
-	for (Book book : books) 
-	{ 
-		
-		
-				if (Topic==book.getTopic())
-				{
-					
-					bookData= "ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice();
-				}
-
-	}
-		return bookData;
 	
+
+for (Book b : books) 
+{ 
+			if (Topic.equals(b.getTopic()))
+			{
+				
+				bookData.add(b);
+				
+			}
+
+}
+			return bookData;
 }
 
+//*********************************************************************************************************
 
+public static String LookUp(String fileName,int id)
+{
+	
+	String bookData = "This id is not valid"; 
+	List<Book> books = new ArrayList<>(); 
+	Path pathToFile = Paths.get(fileName);
 
+try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) 
+{
 
+	String line = br.readLine(); 
+	while (line != null) 
+	{ 
+		String[] attributes = line.split(",");
+		Book book = createBook(attributes); 
+		
+		 books.add(book); 
+	
+		line = br.readLine(); 
+		
+		}
 
+	
+	} 
+catch (IOException ioe)
+{
+	ioe.printStackTrace(); 
+}
+	
+
+for (Book book : books) 
+{ 
+			if (id==book.getId())
+			{
+				
+			bookData= " Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice();
+				
+			}
+
+}
+			return bookData;
+
+}
+
+//************************************************************************************************************
 private static Book createBook(String[] metadata)
 
 {
