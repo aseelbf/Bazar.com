@@ -1,0 +1,4 @@
+1,How to get a good grade in DOS in 20 minutes a day,50,400,distributed systems
+2,RPCs for Dummies,20,58,distributed systems
+3,Xen and the Art of Surviving Graduate School,45,120,Graduate School
+4,Cooking for the Impatient Graduate Student,70,150,Graduate School
