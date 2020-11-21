@@ -11,24 +11,21 @@ public class CSVReaderInJava
 {
 	public static void main(String... args)
 {
-		 List<Book> booksOfTopic =SearchByTopic("books.txt","Graduate School");
+		
 		 
 	
-for (Book book : booksOfTopic) 
-{ 
-	
-	System.out.println("ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice()); 
-} 
-System.out.println(LookUp("books.txt",1));
 
-
+//System.out.println(SearchByTopic("books.txt","Graduate School"));
+System.out.println(readBooksFromCSV("books.txt"));
+Buy("books.txt",1);
 
 }
 	
 
 
-private static List<Book> readBooksFromCSV(String fileName) 
+private static String readBooksFromCSV(String fileName) 
 { 
+	String output="";
 	List<Book> books = new ArrayList<>(); 
 	Path pathToFile = Paths.get(fileName);
 // create an instance of BufferedReader 
@@ -55,12 +52,25 @@ try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US
          {
 	     ioe.printStackTrace(); 
           }
-         return books; 
+
+
+
+for (Book book : books) 
+{ 
+	
+	output+=("ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice()+"\n"); 
+} 
+
+
+
+
+         return output; 
  }
 
 //**************************************************************************************
-public static List<Book> SearchByTopic(String fileName,String Topic)
+public static String SearchByTopic(String fileName,String Topic)
 {
+	String output="";
 	List<Book> bookData = new ArrayList<>(); 
 	List<Book> books = new ArrayList<>(); 
 	Path pathToFile = Paths.get(fileName);
@@ -94,11 +104,15 @@ for (Book b : books)
 			{
 				
 				bookData.add(b);
-				
+				output+=b;
 			}
 
 }
-			return bookData;
+return output;
+
+
+
+			
 }
 
 //*********************************************************************************************************
@@ -148,6 +162,52 @@ for (Book book : books)
 }
 
 //************************************************************************************************************
+
+public static void Buy(String fileName,int id)
+{
+	
+	List<Book> books = new ArrayList<>(); 
+	Path pathToFile = Paths.get(fileName);
+
+try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) 
+{
+
+	String line = br.readLine(); 
+	while (line != null) 
+	{ 
+		String[] attributes = line.split(",");
+		Book book = createBook(attributes); 
+		
+		 books.add(book); 
+	
+		line = br.readLine(); 
+		
+		}
+
+	
+	} 
+catch (IOException ioe)
+{
+	ioe.printStackTrace(); 
+}
+	
+
+for (Book book : books) 
+{ 
+			if (id==book.getId())
+			{
+				
+			book.BuyBook(id);
+				
+			}
+
+}
+
+}
+
+
+
+//**********************************************************************************************************
 private static Book createBook(String[] metadata)
 
 {
@@ -187,9 +247,24 @@ class Book
 	public void setPrice(int price) { this.price = price; }
 
 	
+	
+	public void BuyBook(int ID)
+	{
+	if (this.id==ID)	
+	{
+		this.Amount-=1;
+		
+	}
+	
+	System.out.println(this);
+	
+	}
+	
+	
+	
 @Override 
 public String toString()
-{ return "Book [name=" + name + ", price=" + price + ", price=" + price  + ", Amount=" + Amount + ", Topic=" + Topic+ "]"; }
+{ return "Book [name=" + name + ", price=" + price + ", price=" + price  + ", Amount=" + Amount + ", Topic=" + Topic+ "]\n"; }
 
 
 
