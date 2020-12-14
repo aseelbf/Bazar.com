@@ -15,9 +15,9 @@ public class CSVReaderInJava
 		 
 	
 
-//System.out.println(SearchByTopic("books.txt","Graduate School"));
-System.out.println(readBooksFromCSV("books.txt"));
-Buy("books.txt",1);
+
+System.out.println(readBooksFromCSV("Books.txt"));
+Buy("Books.txt",1);
 
 }
 	
@@ -58,7 +58,7 @@ try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US
 for (Book book : books) 
 { 
 	
-	output+=("ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice()+"\n"); 
+	output+=("ID: "+ book.getId() + ", Name: " + book.getName() + ", Amount: " + book.getAmount() + ", Price: "+book.getPrice()+"\n"); 
 } 
 
 
@@ -68,9 +68,9 @@ for (Book book : books)
  }
 
 //**************************************************************************************
-public static String SearchByTopic(String fileName,String Topic)
+public static Object SearchByTopic(String fileName,String Topic)
 {
-	String output="";
+	String output=""; 
 	List<Book> bookData = new ArrayList<>(); 
 	List<Book> books = new ArrayList<>(); 
 	Path pathToFile = Paths.get(fileName);
@@ -104,7 +104,8 @@ for (Book b : books)
 			{
 				
 				bookData.add(b);
-				output+=b;
+				output+=b.getId()+","+b.getName()+","+b.getAmount() +"," + b.getPrice()+"/";
+				
 			}
 
 }
@@ -117,10 +118,10 @@ return output;
 
 //*********************************************************************************************************
 
-public static String LookUp(String fileName,int id)
+public static Object LookUp(String fileName,int id)
 {
 	
-	String bookData = "This id is not valid"; 
+	String bookData = ""; 
 	List<Book> books = new ArrayList<>(); 
 	Path pathToFile = Paths.get(fileName);
 
@@ -152,20 +153,23 @@ for (Book book : books)
 			if (id==book.getId())
 			{
 				
-			bookData= " Name: " + book.getName() + ", Amount: " + book.getAmount() + " Price: "+book.getPrice();
+			bookData+= book.getId()+","+book.getName() + "," + book.getAmount() + ","+book.getPrice();
+			break;
 				
 			}
 
 }
-			return bookData;
+
+return bookData;
+			
 
 }
 
 //************************************************************************************************************
 
-public static void Buy(String fileName,int id)
+public static Object Buy(String fileName,int id)
 {
-	
+	String output="";
 	List<Book> books = new ArrayList<>(); 
 	Path pathToFile = Paths.get(fileName);
 
@@ -194,14 +198,18 @@ catch (IOException ioe)
 
 for (Book book : books) 
 { 
-			if (id==book.getId())
+			if (id==book.getId() && book.getAmount()>0)
 			{
 				
 			book.BuyBook(id);
-				
+			output="Buying book done successfully";
+				break;
 			}
+			else
+				output="This book is out of stock";
 
 }
+return output;
 
 }
 
@@ -227,16 +235,23 @@ return new Book(id,name, price,Amount,Topic );
 
 class Book
 {
-	private int id;
-	private String name;
-	private int price;
-	private int Amount;
-	private String Topic;
+	private int id=0;
+	private String name="";
+	private int price=0;
+	private int Amount=0;
+	private String Topic="";
 	public Book(int id,String name, int price, int Amount,String Topic)
 	{ 
 		this.id=id; this.name = name; this.price = price; this.Amount=Amount; this.Topic=Topic;
 		
 	} 
+	
+	public Book(int id,String name,int Amount,int price)
+	{
+		this.name = name; this.price = price; this.Amount=Amount;
+	}
+	
+	
 	public int getId() { return id; } 
 	public String getName() { return name; } 
 	public int getPrice() { return price; } 
@@ -264,12 +279,7 @@ class Book
 	
 @Override 
 public String toString()
-{ return "Book [name=" + name + ", price=" + price + ", price=" + price  + ", Amount=" + Amount + ", Topic=" + Topic+ "]\n"; }
 
-
-
+{ return id +","+ name + "," + Amount +","+ price; }
 
 }
-	
-
-
