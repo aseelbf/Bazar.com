@@ -79,15 +79,7 @@ static Gson g = new Gson();
 	        data.append(inputLine);
 	    }
 	
-	    for (Book book:myCache)
-    	{
-    		if (book.getId()==ID)
-    		{
-    		b=new Book(ID,book.getName(),book.getAmount(),book.getPrice());
-    		data.append(b.toString());
-    		break;
-    		}	
-    	}
+
 	    
 	    
 	   // myCache.add(new Book(ID,Name2,Amount2,price2));
